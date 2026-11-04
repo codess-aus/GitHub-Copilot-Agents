@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+<script>
+  (() => {
+    const param = new URLSearchParams(window.location.search).get("scoutTheme");
+    const theme =
+      param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<p class="draft-notice">{{ config.extra.project_status }}</p>
+{% if chapter %}
+<div class="chapter-kicker">Chapter {{ chapter.number }} of {{ catalogue | length }}</div>
+<figure class="chapter-hero">
+  <a href="{{ chapter.original | url }}" aria-label="Enlarge the original infographic for {{ chapter.title }}">
+    <img src="{{ chapter.hero | url }}" width="{{ chapter.width }}" height="{{ chapter.height }}"
+         alt="Illustrated overview of {{ chapter.title }}. An accessible explanation follows below."
+         fetchpriority="high" decoding="async">
+  </a>
+  <figcaption>
+    <a href="{{ chapter.original | url }}">Enlarge / view original infographic</a>
+    <span>The key ideas are also explained in the text below.</span>
+  </figcaption>
+</figure>
+{% endif %}
+{{ super() }}
+{% if is_home %}
+<section class="chapter-overview" aria-labelledby="chapter-overview-title">
+  <h2 id="chapter-overview-title">Your learning journey</h2>
+  <p>Follow the chapters in order, or choose a topic. Each includes the original infographic and a readable explanation.</p>
+  <ol class="chapter-grid">
+    {% for item in catalogue %}
+    <li>
+      <a class="chapter-card" href="{{ item.url | url }}">
+        <img src="{{ item.thumbnail | url }}" alt="" width="{{ item.width }}" height="{{ item.height }}"
+             loading="lazy" decoding="async">
+        <div class="chapter-card-copy">
+          <span class="chapter-kicker">Chapter {{ item.number }}</span>
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.summary }}</p>
+          <span class="card-action">Read chapter <span aria-hidden="true">&rarr;</span></span>
+        </div>
+      </a>
+    </li>
+    {% endfor %}
+  </ol>
+</section>
+{% endif %}
+{% if is_resources %}
+{% if config.extra.resources %}
+<h2 id="recommended-learning">Recommended learning</h2>
+<ul>
+  {% for resource in config.extra.resources %}
+  <li><a href="{{ resource.url }}">{{ resource.title }}</a>{% if resource.description %} &mdash; {{ resource.description }}{% endif %}</li>
+  {% endfor %}
+</ul>
+{% else %}
+<div class="pending-panel"><h2>Resource collection coming soon</h2><p>The author&rsquo;s resource links have not been supplied yet. No placeholder links have been published.</p></div>
+{% endif %}
+{% endif %}
+<nav class="reading-navigation" aria-label="Chapter navigation">
+  {% if reading_previous %}
+  <a class="reading-link previous" href="{{ reading_previous.url | url }}"><span>&larr; Previous</span><strong>{{ reading_previous.title }}</strong></a>
+  {% else %}<span></span>{% endif %}
+  <a class="reading-link home" href="{{ '.' | url }}">Home</a>
+  {% if reading_next %}
+  <a class="reading-link next" href="{{ reading_next.url | url }}"><span>Next &rarr;</span><strong>{{ reading_next.title }}</strong></a>
+  {% else %}<span></span>{% endif %}
+</nav>
+{% endblock %}
+
+{% block footer %}
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <span>GitHub Copilot Agents &middot; Learn, build, review.</span>
+    <div class="site-connections" aria-label="Author links">
+      {% if config.extra.blog_url %}<a href="{{ config.extra.blog_url }}">Blog</a>{% endif %}
+      {% for social in config.extra.social %}
+      <a href="{{ social.link }}">{{ social.name }}</a>
+      {% endfor %}
+      {% if not config.extra.blog_url and not config.extra.social %}
+      <span>Author&rsquo;s social and blog links coming soon.</span>
+      {% endif %}
+    </div>
+  </div>
+</footer>
+{% endblock %}

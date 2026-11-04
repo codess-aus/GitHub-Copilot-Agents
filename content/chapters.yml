@@ -1,0 +1,618 @@
+- slug: what-are-custom-agents
+  title: What are custom agents?
+  summary: Understand personas, instructions, skills and tools before building your first agent.
+  source_image: dac29f7d-000b-404e-82d3-156878ad1ccf-Custom Agents Infographic Guide.png
+  body: |
+    ## An agent with a defined purpose
+
+    A custom agent shapes how Copilot approaches a type of work. Its profile describes expertise, working style and available tools. For example, a focused reviewer can look for accessibility problems instead of trying to implement, test and deploy an entire application.
+
+    The infographic connects a Markdown agent profile to four ideas: **persona**, **tool access**, **guardrails** and **model preference**. Model selection and supported profile fields depend on the Copilot environment. A profile is not a separate security boundary.
+
+    ## Agents, instructions and skills
+
+    **Instructions** supply reusable project guidance. **Skills** package task-specific guidance and supporting resources. **Custom agents** bring a focused role and tool selection to a conversation. These mechanisms complement one another; they are not interchangeable.
+
+    Instructions guide a model but cannot guarantee compliance. Protect sensitive actions using actual permissions, approval controls and repository policy.
+
+    ## Start small
+
+    Choose one recurring task and describe its desired output. Decide which tools are necessary and which actions require a person. Add more agents only when a distinct responsibility justifies them.
+
+    See the [official configuration reference](https://docs.github.com/en/copilot/reference/custom-agents-configuration) for supported fields in your environment. For a broader walkthrough, use the author's recommended [Building Custom Agents guide](https://awesome-copilot.github.com/learning-hub/building-custom-agents/).
+
+- slug: anatomy-of-an-agent
+  title: Anatomy of an agent
+  summary: Explore the configuration and Markdown guidance that make up an agent profile.
+  source_image: 350da639-9ed1-4359-97f8-31c2cf0eb3a8-Anatomy of an Agent Infographic.png
+  body: |
+    ## Two complementary parts
+
+    The image divides an agent file into **YAML frontmatter** and **Markdown instructions**. Frontmatter describes the agent to its host. The body explains its role, scope, process and response format.
+
+    In GitHub's shared reference, `description` is required; `name` and `model` are optional. A clear description helps people choose the agent. Repository profiles commonly live in `.github/agents/` and use the `.agent.md` suffix.
+
+    ## Be explicit about tools
+
+    Define a narrow tool allowlist. The shared reference includes aliases such as `read`, `search` and `edit`. Do not assume the image's `codebase`, `terminal`, `fetch` or other labels are portable tool identifiers. Check names in the actual host.
+
+    **Omitting `tools` does not mean no tools:** GitHub's reference says the default is all available tools. An empty list disables tools. Tool selection still operates within the host's effective permissions.
+
+    ## Treat advanced fields as environment-specific
+
+    The pictured model fallback list, `model-policy`, `reasoningEffort` and agent-scoped hooks are not a universal profile schema. Do not copy them without checking the relevant product documentation. The current hooks reference labels agent-scoped hooks as CLI-only.
+
+    [Check profile fields and tool aliases](https://docs.github.com/en/copilot/reference/custom-agents-configuration) and [hook support](https://docs.github.com/en/copilot/reference/hooks-reference).
+
+- slug: agent-instructions
+  title: Write clear agent instructions
+  summary: Turn a role description into focused review criteria and useful, structured output.
+  source_image: 484820e5-5357-4f36-8a65-0431df639bce-GitHub Copilot Agent Instructions Infographic.png
+  body: |
+    ## Give the role a practical shape
+
+    The infographic uses an API design reviewer to illustrate five building blocks: **title**, **persona**, **expertise**, **checklist** and **output**. Start by stating the agent's job and the changes it should inspect.
+
+    A review checklist might cover resource names, HTTP methods, response codes, errors, pagination and compatibility. Tailor the list to your actual API conventions rather than relying on a generic persona.
+
+    ## Make findings actionable
+
+    The image groups feedback into breaking changes, warnings and good practices. In text, explain the effect, point to evidence and suggest an appropriate remedy. Use words as well as color so readers do not need to distinguish colored labels.
+
+    Include examples of the expected output, but ask the agent to report uncertainty instead of inventing facts or findings.
+
+    ## Guidance is not enforcement
+
+    A sentence such as "never deploy" expresses intent; it does not remove deployment capability. Pair instructions with restricted tools and human approval. The model and tool names pictured are illustrative, not a recommended current configuration.
+
+    [Review the supported agent profile format](https://docs.github.com/en/copilot/reference/custom-agents-configuration).
+
+- slug: configuration-levels
+  title: Understand configuration scopes
+  summary: Separate personal preferences, repository guidance and organizational policy without assuming one universal precedence rule.
+  source_image: f903256e-5713-4839-97d6-5d5c60270e09-GitHub Copilot Configuration Levels Infographic.png
+  body: |
+    ## Three places to think about configuration
+
+    The image distinguishes **user settings** for personal preferences, **repository settings** for shared project practices and **organization settings** for centrally managed policy and resources. These are useful categories, but they describe different kinds of controls.
+
+    Keep project conventions in version-controlled guidance. Keep personal editor preferences in the appropriate user settings. Administrators manage organization policy through supported administrative controls.
+
+    ## Important correction: precedence depends on the setting
+
+    The pictured organization-over-repository-over-user stack is **not a universal Copilot configuration algorithm**. Instructions, editor settings, policy restrictions and agent-profile discovery have different rules.
+
+    For example, the shared custom-agent reference says duplicate agent filenames are resolved with the lowest-level configuration taking precedence. VS Code also distinguishes instruction scope from activation. A repository instruction does not simply switch a personal inline-suggestion setting back on.
+
+    ## Investigate a conflict
+
+    Identify the exact setting, Copilot surface and active harness. Check discovery and activation, then read the documented resolution rule for that feature. Test in a fresh conversation.
+
+    [Agent configuration reference](https://docs.github.com/en/copilot/reference/custom-agents-configuration) · [Instructions in VS Code](https://code.visualstudio.com/docs/agent-customization/custom-instructions).
+
+- slug: configuration-options
+  title: Configure your working environment
+  summary: Consider suggestion behavior, language preferences and sensitive context using settings supported by your actual client.
+  source_image: f2cc0aea-de55-45cc-96de-fa232cbd1186-GitHub Copilot Configuration Guide.png
+  body: |
+    ## Decide how assistance should appear
+
+    The infographic groups configuration into inline suggestions, chat availability, suggestion triggers, language-specific behavior and excluded content. These questions help you choose an experience that supports your concentration.
+
+    Do you want automatic inline completions or explicit invocation? Which languages need assistance? Which project data should not be available to the assistant?
+
+    ## Do not paste the pictured settings blindly
+
+    The JSON keys shown in the artwork have not all been verified as supported settings for every client/version. Use your installed editor's Settings interface and its current reference. IDE settings do not automatically configure the CLI, app or cloud environment.
+
+    Custom instructions guide agent behavior; the VS Code documentation explicitly says they do not apply to inline suggestions.
+
+    ## Protect sensitive information independently
+
+    Do not rely on a pictured exclude list as your only security control. Avoid committing secrets, limit accessible data and verify content-exclusion support for the exact experience in use. Permission and policy controls must be tested separately from preference settings.
+
+    [Read the VS Code instruction guidance](https://code.visualstudio.com/docs/agent-customization/custom-instructions) before deciding which customization mechanism to use.
+
+- slug: design-patterns
+  title: Choose a focused design pattern
+  summary: Compare domain experts, workflow automators and quality reviewers as starting points for agent design.
+  source_image: 1457f615-b913-49f2-8fc9-826e98ab46f8-GitHub Copilot Design Patterns Infographic.png
+  body: |
+    ## The domain expert
+
+    This pattern contributes deep knowledge in one area. The image uses infrastructure as an example: security requirements, configurable values, tagging and naming conventions become explicit review criteria. Expertise should be bounded by the team's real platform standards.
+
+    ## The workflow automator
+
+    A release-preparation agent can analyze changes, propose a version, prepare release notes and report evidence. Distinguish preparation from publication. Shipping a release or modifying production needs separate authorization, not merely a prompt that sounds confident.
+
+    ## The quality reviewer
+
+    The image's accessibility reviewer considers semantics, keyboard interaction, contrast, screen-reader use and focus. An agent can surface likely problems, but a review is not an enforced merge gate until repository checks or review rules require it.
+
+    Pick one pattern, define its input and output, then restrict its tools. Reuse shared instructions or skills instead of building one agent that owns every stage. Pictured model choices and tool names are examples, not current recommendations.
+
+- slug: using-custom-agents
+  title: Use custom agents deliberately
+  summary: Make profiles discoverable and select the right specialist for a bounded task.
+  source_image: d9f3c632-1ecb-4ffc-b964-991a7ed9e935-Using Custom Agents with GitHub Copilot.png
+  body: |
+    ## Store a profile where the host discovers it
+
+    The infographic shows repository profiles in `.github/agents/`. Each profile uses YAML frontmatter and Markdown instructions. Organization-shared discovery has its own setup; placing a file in an arbitrary root `agents/` folder does not make it organization-wide.
+
+    ## Select the specialist
+
+    Use the custom-agent selection control supported by your client. A focused task might ask a testing specialist to inspect existing tests and propose missing cases without changing production code.
+
+    The artwork also shows a comment-based invocation. Treat that wording as an illustration: supported mention syntax, available selectors and session behavior vary between GitHub.com, IDEs, CLI and the app.
+
+    ## Confirm effective capability
+
+    Check that the selected profile, tools and repository guidance are active before relying on them. Give only the required tools and review the result. A profile's stated persona does not bypass host permissions or replace approval.
+
+    [Use the shared profile reference](https://docs.github.com/en/copilot/reference/custom-agents-configuration) to check fields, discovery rules and environment differences.
+
+- slug: better-results
+  title: Ask for better results
+  summary: Write specific requests with existing examples, acceptance criteria, boundaries and a clear definition of done.
+  source_image: fbf41b85-3108-4e50-a020-8cd97493e3bd-GitHub Copilot Tips for Better Results.png
+  body: |
+    ## Replace broad requests with observable outcomes
+
+    The image contrasts "add validation" with a concrete description of what must be accepted and rejected. State the affected endpoint or component, expected behavior and error handling. Avoid vague requests such as "make it work."
+
+    ## Point to prior art
+
+    Identify relevant source files, utilities and tests so the agent can follow existing patterns. Explain which example is authoritative and where it does not apply.
+
+    Define done using acceptance criteria: valid input succeeds, invalid input receives a clear error, related tests cover the behavior and documentation reflects the change.
+
+    ## Keep scope small and state constraints
+
+    Ask for one coherent outcome rather than an entire subsystem. Say what must not change, such as a database schema or public contract. If a necessary change crosses that boundary, require the agent to stop and request a decision.
+
+    Good prompts improve direction. They do not replace review, test evidence or permission controls.
+
+- slug: common-pitfalls
+  title: Avoid common custom-agent pitfalls
+  summary: Replace vague personas, accidental tool access and contradictory instructions with focused responsibilities.
+  source_image: 052c931e-27ba-459b-9f4c-2e74c4a1f206-GitHub Copilot Common Pitfalls Infographic.png
+  body: |
+    ## A persona that is too broad
+
+    "You are a software engineer" says little about the expected work. Specify expertise, review criteria and output format. Split unrelated responsibilities when their permissions or success criteria differ.
+
+    ## Tools that are not deliberate
+
+    The infographic warns about missing tools, but its implication needs qualification: in GitHub's shared profile reference, **omitting `tools` enables all available tools by default**, rather than disabling them. Use an explicit allowlist to avoid unintended access.
+
+    The pictured `codebase` and `terminal` labels are not a portable allowlist. Confirm supported tool identifiers in the target client.
+
+    ## Conflicting or monolithic guidance
+
+    Agent instructions should complement repository standards. Resolve contradictions such as tabs versus spaces instead of asking the model to guess.
+
+    Avoid one agent responsible for security, tests, documentation and deployment with unrestricted tools. Prefer focused roles with clear handoffs and reusable skills.
+
+    [Check tool defaults and aliases](https://docs.github.com/en/copilot/reference/custom-agents-configuration) before using any illustrated example.
+
+- slug: custom-agent-questions
+  title: Common questions about custom agents
+  summary: Resolve practical questions about selection, skills, team size and useful examples.
+  source_image: 4ea73524-341a-466b-a3f7-895c8caea338-GitHub Copilot Common Questions Infographic.png
+  body: |
+    ## How do I select an agent?
+
+    Use the picker or other selection mechanism documented for your Copilot surface. The image lists several client experiences, but availability and controls change. Do not assume a particular protocol integration or mention syntax exists in every host.
+
+    ## Can an agent use skills?
+
+    Supported clients can combine a focused agent with reusable task guidance. A skill should explain when it applies and what resources it needs. Review any scripts before allowing them to run.
+
+    ## How many agents should a repository have?
+
+    There is no required count. The image suggests starting with a small set for recurring workflows. A better measure than a number is whether each agent has a distinct purpose, useful output and appropriately narrow tools.
+
+    ## Should profiles include examples?
+
+    Yes, when examples clarify expected behavior, code patterns or review format. Keep them representative and current. Examples are not permission grants, and example output should not encourage fabricated findings.
+
+    [Consult the profile reference](https://docs.github.com/en/copilot/reference/custom-agents-configuration) for current shared behavior and host-specific exceptions.
+
+- slug: custom-agent-best-practices
+  title: Maintain effective custom agents
+  summary: Combine specific personas, examples, tested model choices and a maintainable repository structure.
+  source_image: 6935fb2b-bd86-45b7-be80-4fec1190eaa4-GitHub Copilot Custom Agent Best Practices.png
+  body: |
+    ## Describe expertise and working style
+
+    The infographic favors a specific technology or review responsibility over a generic title. Explain whether the agent should ask clarifying questions, report uncertainty, propose changes or implement them. Include examples of useful outputs.
+
+    ## Select models through evaluation
+
+    The model table in the image is **not a current availability list or endorsed ranking**. Names, access, context limits and supported profile settings change by plan, policy and client.
+
+    Evaluate the models actually available to you against representative tasks. Consider correctness, tool use, latency and cost. Document the results rather than choosing from an unverified static comparison.
+
+    ## Organize around responsibility
+
+    Keep one focused persona per profile and reuse shared skills for repeatable procedures. Version-control changes and test whether the agent still follows the intended workflow after updates.
+
+    Guardrails in prose are not sufficient for high-impact actions. Restrict credentials and tools, and preserve human approval where needed.
+
+    [Check model and tool configuration support](https://docs.github.com/en/copilot/reference/custom-agents-configuration) in your target environment.
+
+- slug: mcp-connections
+  title: Connect agents to MCP tools safely
+  summary: Use the PostgreSQL example to distinguish external capability from permission and authorization.
+  source_image: 5d184116-ad84-4869-9880-d3b0e4a8d02d-GitHub Copilot Meets PostgreSQL MCP.png
+  body: |
+    ## What the connection adds
+
+    Model Context Protocol provides a common way to expose external tools and context. The image connects a database-focused agent to code, a command environment and PostgreSQL tooling to inspect queries and suggest improvements.
+
+    A tool being available is not permission to use every operation it exposes. An agent that only needs query-plan inspection should not automatically receive database modification or administrative capability.
+
+    ## Register, authorize and authenticate separately
+
+    Configure a trusted server using the target client's supported mechanism. Authenticate with narrowly scoped credentials. Select only the specific server tools needed for the task; the pictured `postgres-mcp` name is not a universal built-in tool.
+
+    GitHub's profile reference supports namespaced tool identifiers such as `server-name/tool-name`. Its `mcp-servers` frontmatter field is not used by IDE custom agents.
+
+    ## Protect the data
+
+    Prefer non-production or read-only access. Require human approval for writes, schema changes and destructive operations. Keep credentials out of profiles, prompts and committed configuration. Audit decisions without copying sensitive database contents into logs.
+
+    [Read the MCP overview](https://docs.github.com/en/copilot/concepts/customizations/mcp) and [profile configuration reference](https://docs.github.com/en/copilot/reference/custom-agents-configuration).
+
+- slug: agent-skills
+  title: Package repeatable work as skills
+  summary: Separate an agent's role from task-specific instructions, examples and supporting resources.
+  source_image: fe2494d6-b3e7-49a4-96aa-66b6303499dc-Agent Skills_ The Coding Agent Infographic.png
+  body: |
+    ## Who does the work, and how?
+
+    The infographic describes an agent as **who** does the work and a skill as **how** to perform a recurring task. A skill can package instructions, templates, examples, reference material and scripts.
+
+    The image's migration example illustrates a repeatable procedure: inspect a schema, create a named migration, include rollback considerations and test locally. Those are workflow ideas, not authorization to change a real database.
+
+    ## Make discovery meaningful
+
+    A skill needs a clear name and description so a supported host can identify when it is relevant. The image shows a `SKILL.md` entry point and supporting folders.
+
+    Supported directories, automatic activation and personal-skill availability differ by product. The illustrated project and home-directory paths are not a guarantee that every cloud session can access your local files.
+
+    ## Review executable resources
+
+    Treat scripts as code that needs review and restricted permissions. Loading a skill must not expand an agent's authorization. Require approval before high-impact actions, even when a skill presents them as an ordinary step.
+
+- slug: task-selection
+  title: Choose the right coding-agent tasks
+  summary: Start with bounded, verifiable work and recognize tasks that need more human discovery first.
+  source_image: b36879ef-6d25-4edd-8d24-11f9f326943c-GitHub Copilot Task Selection Guide.png
+  body: |
+    ## Strong candidates
+
+    The image highlights well-defined features, reproducible bug fixes, tests for existing behavior, targeted refactors and documentation updates. These tasks have a clear scope and evidence that can distinguish success from a plausible-looking change.
+
+    ## Tasks that need preparation
+
+    Ambiguous design decisions need discussion. Large architectural changes need decomposition. Performance work needs a measurable baseline and target. Work involving unavailable external systems needs an explicit access and testing plan.
+
+    These are reasons to clarify or split work, not claims that agents can never contribute.
+
+    ## Verify the environment's actual boundaries
+
+    The infographic describes an isolated, branch-based review workflow. Do not apply those permission claims to every Copilot surface or assume the agent can never merge or deploy. Effective permissions depend on the environment, credentials and policy.
+
+    Use least privilege, require review and protect important branches. Instructions and hooks complement these controls; they do not replace them.
+
+    [Check the current GitHub.com environment model](https://docs.github.com/en/copilot/concepts/copilot-surfaces/copilot-on-github).
+
+- slug: coding-agent-questions
+  title: Common questions about coding-agent work
+  summary: Set realistic expectations for duration, repository access, stalled work and concurrent tasks.
+  source_image: dd6ebd67-f5c6-4b0b-81ea-4945e74254d3-GitHub Copilot Coding Agent Common Questions Infographic.png
+  body: |
+    ## How long will it take?
+
+    The image gives an illustrative duration, not a service-level guarantee. Task complexity, setup, environment capacity and checks all influence completion. Inspect progress and evidence instead of assuming a fixed deadline.
+
+    ## What about private repositories or parallel work?
+
+    Access depends on your plan, enabled features, repository permissions and organization policy. Parallel tasks need isolated work surfaces and coordination when they touch the same code. A picture of a session dashboard is not proof that the same interface exists in every client.
+
+    ## What if progress stops?
+
+    Inspect the exact blocker: missing dependencies, unclear acceptance criteria, unavailable credentials or a failing test. Provide focused guidance or take over. Do not assume every stalled task automatically produces a complete pull request.
+
+    Custom agents and skills can help where supported, but their discovery and invocation depend on the environment.
+
+    GitHub's current documentation distinguishes cloud sandboxes from GitHub Actions-based sessions. [Check that distinction before applying older coding-agent assumptions](https://docs.github.com/en/copilot/concepts/copilot-surfaces/copilot-on-github).
+
+- slug: repository-readiness
+  title: Prepare the repository for agent work
+  summary: Make setup reproducible and supply clear conventions, repeatable guidance and validation.
+  source_image: 93934810-aea0-4c96-b4e7-398876cd1fad-GitHub Copilot Best Practices Infographic.png
+  body: |
+    ## Make the environment repeatable
+
+    An agent cannot reliably validate changes if the project does not build. Document dependencies, setup commands and the smallest useful tests. The infographic names `copilot-setup-steps.yml`; that is associated with a particular Actions-based experience, not a universal setup file for every Copilot environment.
+
+    ## Explain project conventions
+
+    Give concise repository instructions for architecture, naming, formatting and verification. Use more targeted guidance only when its scope is clear. Confirm the active host actually discovers it.
+
+    Package recurring procedures as skills and use focused profiles for specialized roles. Keep these sources consistent rather than copying slightly different rules into many places.
+
+    ## Automate objective checks
+
+    Formatting, linting and tests should provide visible evidence. Hooks can support that process, but required repository checks must still enforce merge conditions independently.
+
+    Review changes to setup scripts and hooks as executable code. Keep secrets outside committed configuration and grant only the access needed for the selected environment.
+
+    The author's recommended [Cloud Agent Workshop](https://awesome-copilot.github.com/learning-hub/copilot-workshops/cloud/) provides hands-on practice with instructions, issue delegation and review.
+
+- slug: remote-steering
+  title: Monitor and steer remote work
+  summary: Understand the value of remote session control without assuming a specific command or interface is available.
+  source_image: f578a025-a5f0-4a81-855f-bc0e5d08a1d6-GitHub Copilot Remote Control Infographic.png
+  body: |
+    ## Stay involved while work runs
+
+    The infographic presents remote control as a way to monitor long-running work, clarify a task and correct its direction before a final result is ready. This is most useful when an early misunderstanding could lead to extensive unwanted changes.
+
+    ## Distinguish the concept from the pictured commands
+
+    The image shows `/remote`, `/remote on`, `/remote off`, a Remote tab and a resume command with a version annotation. **Those exact commands and version claims have not been independently verified for this draft.** Do not treat this page as a command reference.
+
+    Use the help and official documentation for your installed client. GitHub now distinguishes clients, sessions and execution environments, including sessions that can continue across supported clients.
+
+    ## Preserve the authorization boundary
+
+    Steering a session does not expand its permissions or authorize deployment. Verify the repository, branch and environment before sending instructions. When changing scope, state the new requirement clearly and review resulting changes.
+
+    [Read about current cross-client sessions](https://docs.github.com/en/copilot/concepts/copilot-surfaces/copilot-on-github).
+
+- slug: hooks
+  title: Use hooks as supporting controls
+  summary: Connect lifecycle events to deterministic checks while accounting for host support and failure behavior.
+  source_image: 0b21ae20-714d-4a8f-b39c-5d3d6144ef1c-GitHub Copilot Hooks Coding Agent Infographic.png
+  body: |
+    ## Before and after tool use
+
+    The image associates `preToolUse` with allow/deny decisions and `postToolUse` with formatting or validation. It also names session-start, session-end and agent-stop events for lifecycle checks and observability.
+
+    These categories explain why hooks can be useful. Event availability, payloads, response formats and blocking behavior must come from the target host's current reference.
+
+    ## CLI and cloud are not identical
+
+    GitHub's hooks reference describes both CLI and cloud support, but only a subset of events fires in the cloud. Repository hook files live under `.github/hooks/`. Agent-scoped hooks are currently documented as CLI-only.
+
+    Hooks are external commands. Inspect them before execution and do not assume that an error, timeout or post-action check automatically blocks a dangerous action. Design critical checks to deny on ambiguous outcomes and test that behavior.
+
+    ## Keep independent controls
+
+    Use real permissions and required checks for high-impact operations. Log decisions and metadata without exposing secrets or user content. Protect hook configuration from unauthorized edits.
+
+    [Use the official hooks reference](https://docs.github.com/en/copilot/reference/hooks-reference), not the infographic's conceptual examples, when writing configuration.
+
+- slug: agentic-system-concepts
+  title: Learn the language of agentic systems
+  summary: Define agents, architecture, branches, pull requests, workflows, validation and policy.
+  source_image: f7b99430-d233-4b4e-a1a7-6c9ea86e150d-GitHub Copilot Agentic Systems Guide.png
+  body: |
+    ## From a goal to a reviewed change
+
+    The infographic presents a system that interprets a goal, creates a working branch, proposes a change and gathers validation before acceptance. Architecture determines where each step happens and which controls constrain it.
+
+    ## A practical glossary
+
+    **Agent:** a system that interprets a task and can take supported actions. **Architecture:** the design of its workflow, responsibilities and boundaries. **Branch:** a separate line of development. **Pull request:** a proposed changeset for discussion and review.
+
+    **Workflow:** an automated process such as build, test or scan. **Validation:** objective and human checks on whether the result meets requirements. **Policy:** the rules for acceptable behavior and acceptance. **Repository rule:** an enforceable repository control where configured.
+
+    ## Capability is not reliability
+
+    More tools or autonomy do not automatically make a system dependable. Make work visible, validate outcomes and ensure acceptance depends on configured controls rather than the agent's own confidence.
+
+    The pictured sequence is a recommended design pattern, not a description of every Copilot session's default behavior.
+
+    Continue with Microsoft's [Foundations of Agentic AI in GitHub module](https://learn.microsoft.com/en-us/training/modules/foundations-agentic-ai/) for more on the lifecycle, traceability and contributor model.
+
+- slug: agentic-workflow
+  title: Make the agentic workflow visible
+  summary: Connect the goal, proposed changes and review evidence through a plan-act-validate-merge loop.
+  source_image: 8232aae9-9b79-4b46-bb15-69fb17d8d6a2-GitHub Copilot Agentic Systems Infographic.png
+  body: |
+    ## Plan, act, validate, merge
+
+    The image condenses an agentic workflow into four stages. Planning clarifies the intended outcome. Acting produces branch changes. Validation gathers tests, security evidence and review. Merging accepts the result only when the required conditions are met.
+
+    ## Connect the artifacts
+
+    Keep the goal or issue linked to the branch and pull request. Attach relevant workflow results and review decisions. A reviewer should be able to understand what changed, why it changed and which evidence supports acceptance.
+
+    ## Prefer policy-driven acceptance
+
+    The image contrasts an unstructured change with a visible, validated and policy-driven system. Implement important boundaries using required checks, review rules and limited credentials.
+
+    A diagram is not itself enforcement. If an actor can bypass the pull request or required checks, the intended architecture has a gap. Test configured controls using a harmless example before depending on them for sensitive work.
+
+- slug: sdlc-responsibilities
+  title: Map responsibilities to the SDLC
+  summary: Give planning, implementation, validation and deployment distinct responsibilities and control points.
+  source_image: 4482e4cf-8dbb-46cc-9941-1c705d3282de-GitHub Copilot SDLC Agent Responsibilities.png
+  body: |
+    ## Separate the stages
+
+    **Planning** produces scope, steps and success criteria. **Implementation** changes code on a working branch. **Validation** runs checks and records evidence. **Deployment** releases an approved result into an environment.
+
+    The infographic maps those stages to issues, branches, pull requests, workflows and environment approvals. Make the mapping explicit for your repository rather than letting one broad agent own every decision.
+
+    ## Define boundaries early
+
+    Limit files, tools and credentials for the task. Treat workflow and infrastructure changes as higher risk. A recommended governance model is that agents propose and configured policy plus authorized people accept.
+
+    That model is a design choice to enforce, not a claim that every agent inherently lacks merge or deployment capability.
+
+    ## Example: dependency remediation
+
+    Identify the affected dependency, prepare a bounded update, include lockfile changes and open a reviewable proposal. Validate that the vulnerability is resolved and that behavior still works. Record residual risks and require the appropriate acceptance controls before release.
+
+- slug: task-contracts
+  title: Define a task contract
+  summary: Specify inputs, outputs and success criteria so an agent's work can be evaluated against the real goal.
+  source_image: 976cd912-b74d-42b5-bb18-2aa357bbbf22-GitHub Copilot Task Contracts Infographic.png
+  body: |
+    ## Inputs: what the agent needs
+
+    The image's vulnerability-remediation example starts with an alert or issue, the permitted repository scope and constraints. State which files may change, what must remain untouched and what information is missing.
+
+    ## Outputs: what the agent must produce
+
+    A useful result includes a bounded changeset, a structured explanation and links to validation evidence. For higher-risk work, include rollback or escalation information. Do not accept a generic success statement in place of inspectable artifacts.
+
+    ## Success criteria: how the result is judged
+
+    Required checks passing is necessary in many workflows, but it may not prove the actual goal. Confirm that the vulnerable version was replaced, the scope stayed within bounds and the intended behavior is covered.
+
+    Turn objective criteria into required checks where possible. Keep human decisions explicit. The YAML screenshot is illustrative and should not be copied as a complete, secure workflow.
+
+    Before starting, ask whether an independent reviewer could decide success using the contract and the resulting evidence.
+
+- slug: planning-and-execution
+  title: Separate planning from execution
+  summary: Choose when a human reviews intent and enforce the boundary according to task risk.
+  source_image: edc79132-dd7a-4c48-8128-7dafb0e5cadd-GitHub Copilot Workflow Separation Infographic.png
+  body: |
+    ## Plan, execute, validate
+
+    A plan describes what will change and why. Execution makes the concrete change. Validation checks whether the result meets the goal. The infographic emphasizes reviewing intent before accepting impact.
+
+    ## Two useful arrangements
+
+    A **plan-first** proposal receives approval before implementation. This can suit sensitive workflow, authentication or infrastructure changes.
+
+    A **combined plan-and-change** proposal includes the rationale and implementation together, then receives checks and review before merge. This can suit smaller, reversible tasks.
+
+    Neither arrangement removes review. The difference is when code is generated relative to the human decision.
+
+    ## Enforce the chosen boundary
+
+    Use read-only planning capability, restricted tools or an explicit approved handoff where the environment supports them. A "plan mode" label or sentence in a prompt is not sufficient proof that execution is impossible.
+
+    Record approval and scope. If new information materially changes the plan, return to the decision point rather than treating the old approval as unlimited authorization.
+
+- slug: pull-request-controls
+  title: Make pull requests control points
+  summary: Combine structured proposals, required checks, expert review and protected deployment environments.
+  source_image: 33b20a19-2056-4aa7-bf0b-34ade0f448f4-GitHub Copilot PR Governance Infographic.png
+  body: |
+    ## A reviewable path to acceptance
+
+    The infographic shows branch creation, a pull request containing a plan, required review, automated checks and merge after conditions are satisfied. Each stage should leave evidence for the next person or process.
+
+    ## Use complementary controls
+
+    A pull request template asks for goals, scope, success criteria, risks and evidence. Required checks can enforce objective conditions. CODEOWNERS routes relevant reviewers; rules must separately require the appropriate approval. Environment protections can gate deployment.
+
+    A template by itself does not prevent merge. Likewise, a screenshot of a plan-check script does not prove that the implementation securely validates a plan.
+
+    ## Test the enforcement
+
+    Confirm required checks and review rules apply to the intended branches and actors. Review bypass permissions. Verify that a failing check prevents acceptance and that protected deployments require the expected approval.
+
+    The pictured action versions, shell snippets and permission examples are conceptual material, not a production-ready workflow to paste into a repository.
+
+- slug: governance-and-autonomy
+  title: Match autonomy to risk
+  summary: Extend pull-request governance with explicit approval boundaries and risk-sensitive decisions.
+  source_image: ace14525-2d92-40d6-bedb-9c59bab5539e-PR Governance Infographic with Coda.png
+  body: |
+    ## From controls to operating decisions
+
+    This companion infographic revisits templates, checks, ownership and environment gates, then asks how much autonomy is appropriate. The answer depends on the impact of the task, not just how quickly an agent can perform it.
+
+    ## Make approval meaningful
+
+    Define what reviewers approve: the proposed approach, the actual diff, the validation evidence or a deployment to a specific environment. These are distinct decisions. An approved plan does not automatically approve a later production release.
+
+    Route sensitive files to appropriate reviewers and protect changes to the enforcement mechanisms themselves. Keep approval evidence connected to the change.
+
+    ## Prevent bypass paths
+
+    An architecture loses its intended boundary if an agent can bypass checks, merge without the required review or alter production directly. Restrict capabilities independently from its prompt.
+
+    Start with bounded, reversible tasks. Increase autonomy only after the relevant controls and outcomes have been demonstrated, and retain an escalation path when the situation no longer fits the approved scope.
+
+    For a broader treatment of coordination, memory, evaluation and governance, see [Developing in Agentic AI Systems - Part 2](https://learn.microsoft.com/en-us/training/paths/github-agentic-systems-part-two/github-agentic-systems-part-two). The [Agents and Subagents guide](https://awesome-copilot.github.com/learning-hub/agents-and-subagents/) explains focused delegation; isolate responsibilities and do not give a delegate broader permissions than its coordinator.
+
+- slug: reliable-workflows
+  title: Build reliable workflow handoffs
+  summary: Carry structured outputs between jobs, use the right context and gate execution according to event and risk.
+  source_image: 2afcd7c7-7a00-4db0-baec-cc119bbe4ced-Build Reliable Workflows Infographic.png
+  body: |
+    ## Treat handoffs as data
+
+    The image distinguishes step outputs, job outputs and runtime environment variables. A value needed in another job must be deliberately exported and passed through the workflow's supported output mechanism. Do not assume shell state persists between jobs.
+
+    ## Use context intentionally
+
+    Event metadata, configured variables and runtime environment values serve different purposes. Check whether a workflow has a pull-request context before performing pull-request-specific actions. Manual runs and other triggers may lack that data.
+
+    Treat event fields and generated output as untrusted input. Avoid interpolating them directly into executable shell commands.
+
+    ## Apply risk-sensitive execution
+
+    The image progresses from low-risk documentation work to sensitive infrastructure and production operations. This is an example policy framework, not a default GitHub behavior or a recommendation to auto-merge every documentation change.
+
+    Use narrowly scoped job permissions, protected environments where appropriate and explicit approval for high-impact operations. Validate actual event paths and failure cases rather than only testing the happy path. Pictured YAML fragments are not complete workflows.
+
+- slug: operate-agents
+  title: Observe and operate agents
+  summary: Combine evidence, bounded retries, safe tool access, secrets management and escalation.
+  source_image: 08128635-5448-4298-ace2-c77d0c396196-GitHub Copilot Agent Operations Infographic.png
+  body: |
+    ## Keep the minimum useful evidence
+
+    The infographic lists a structured plan, commit and pull-request history, workflow results, artifacts and review outcomes. Together these help explain what happened and why a result was accepted or rejected.
+
+    Preserve necessary logs and reports using a controlled retention policy. Record decisions and metadata rather than indiscriminately logging prompts, credentials or sensitive tool output.
+
+    ## Design for imperfect execution
+
+    Bound retries and distinguish transient failures from invalid requests or missing authorization. Repeated failure should trigger escalation, not an endless loop. Prepare a rollback approach for high-impact changes.
+
+    ## Keep capability narrow
+
+    Explicit tool allowlists, restricted MCP access and minimal workflow permissions reduce the blast radius. Secrets belong in protected mechanisms, not instructions or committed files. Pass only what is needed to the relevant environment.
+
+    The hook JSON and permission fragments in the image are conceptual; their event schema and runtime behavior are not a universal implementation. Use the [current hooks reference](https://docs.github.com/en/copilot/reference/hooks-reference) and test fail-closed behavior before relying on a control.
+
+- slug: architecture-summary
+  title: Architecture summary
+  summary: "Bring the journey together: focused responsibilities, verifiable work, enforced boundaries and human oversight."
+  source_image: 6ed91e78-e0ea-4ba9-9a7e-53a1ca162bd7-GitHub Copilot Agent Architecture Summary.png
+  body: |
+    ## Design for reliability, not just capability
+
+    The final infographic brings together the central idea of the journey: useful agent systems need clear boundaries, governance and human oversight. Agents can interpret goals and propose changes, while the surrounding architecture determines how those changes are evaluated and accepted.
+
+    ## The six takeaways
+
+    1. Map responsibilities to SDLC stages and keep scope bounded.
+    2. Define task inputs, outputs and enforceable success criteria.
+    3. Separate planning from execution when risk requires approval of intent.
+    4. Use pull-request controls, expert review and environment protection.
+    5. Build reliable workflows with structured handoffs and safe triggers.
+    6. Operate with observability, least privilege and a clear escalation path.
+
+    ## Apply the ideas to one real workflow
+
+    Start with a small task. Write its contract, identify its allowed tools and decide which evidence demonstrates success. Configure independent controls for sensitive actions and inspect what happens when a check fails.
+
+    The intended outcome is a faster development process without giving up trust, quality or accountability. That outcome depends on tested controls and review, not on a persona or diagram alone.
+
+    Continue to Resources for the author's six recommended learning links and the draft's product-reference checks. [Developing in Agentic AI Systems - Part 1](https://learn.microsoft.com/en-us/training/paths/gh-developing-agentic-systems-1) is a useful next step for architecture, SDLC integration and tooling.
