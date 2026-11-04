@@ -43,7 +43,7 @@ markdown_extensions:
   - pymdownx.superfences
 extra:
   generator: false
-  project_status: Editorial draft - not yet published
+  project_status: ""
   # Add verified destinations here; empty lists do not create dead links.
   social: []
   blog_url: ""

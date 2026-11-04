@@ -13,7 +13,9 @@
 {% endblock %}
 
 {% block content %}
+{% if config.extra.project_status %}
 <p class="draft-notice">{{ config.extra.project_status }}</p>
+{% endif %}
 {% if chapter %}
 <div class="chapter-kicker">Chapter {{ chapter.number }} of {{ catalogue | length }}</div>
 <figure class="chapter-hero">

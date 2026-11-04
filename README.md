@@ -1,6 +1,6 @@
 # GitHub Copilot Agents
 
-A Material for MkDocs learning site built around 28 supplied infographics. **Editorial draft: not published.** The learning order is beginner to advanced, followed by the architecture summary and Resources.
+A Material for MkDocs learning site built around 28 supplied infographics. The learning order is beginner to advanced, followed by the architecture summary and Resources. Published at https://codess-aus.github.io/GitHub-Copilot-Agents/.
 
 ## Run locally
 
@@ -54,7 +54,7 @@ extra:
   resources: [] # Each entry: {title: "Link title", url: "actual HTTPS URL", description: "Optional context"}
 ```
 
-Review final wording, site title, accessibility, image rights/credits and resource/social/blog links with the author. Once approved, change `extra.project_status` and the draft notices in `docs/index.md` and the chapter template as appropriate.
+Review wording, site title, accessibility, image rights/credits and resource/social/blog links with the author. `extra.project_status` is empty for the published site, so no status banner is rendered. Set it to a non-empty announcement only when a site-wide notice is needed.
 
 ## Deploy to GitHub Pages (only after approval)
 

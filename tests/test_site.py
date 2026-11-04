@@ -24,6 +24,7 @@ class PageParser(HTMLParser):
         self.resources = []
         self.ids = set()
         self.h1_count = 0
+        self.status_notice_count = 0
         self.feed(path.read_text(encoding="utf-8"))
 
     def handle_starttag(self, tag, attrs):
@@ -38,6 +39,8 @@ class PageParser(HTMLParser):
             self.resources.append(attrs)
         if tag == "h1":
             self.h1_count += 1
+        if "draft-notice" in attrs.get("class", "").split():
+            self.status_notice_count += 1
 
 
 def resolve_link(page, link):
@@ -151,6 +154,15 @@ class SiteTests(unittest.TestCase):
         for resource in resources:
             self.assertIn(resource["url"], links)
         self.assertNotIn("Resource collection coming soon", (SITE / "resources" / "index.html").read_text(encoding="utf-8"))
+
+    def test_status_banner_matches_configuration(self):
+        config = yaml.safe_load((ROOT / "mkdocs.yml").read_text(encoding="utf-8"))
+        expected = 1 if config["extra"].get("project_status") else 0
+        for path, page in self.pages.items():
+            if path.name == "404.html":
+                continue
+            with self.subTest(page=path):
+                self.assertEqual(page.status_notice_count, expected)
 
 
 if __name__ == "__main__":
