@@ -1,0 +1,68 @@
+site_name: GitHub Copilot Agents
+site_description: An illustrated learning journey from custom agents to reliable, governed workflows.
+site_url: https://codess-aus.github.io/GitHub-Copilot-Agents/
+use_directory_urls: true
+strict: true
+watch:
+  - content
+  - hooks
+  - overrides
+theme:
+  name: material
+  custom_dir: overrides
+  language: en
+  font: false
+  features:
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+plugins:
+  - search
+hooks:
+  - hooks/chapters.py
+extra_css:
+  - assets/stylesheets/site.css
+extra_javascript:
+  - assets/javascripts/theme.js
+markdown_extensions:
+  - admonition
+  - attr_list
+  - pymdownx.details
+  - pymdownx.superfences
+extra:
+  generator: false
+  project_status: Editorial draft - not yet published
+  # Add verified destinations here; empty lists do not create dead links.
+  social: []
+  blog_url: ""
+  resources:
+    - title: Developing in Agentic AI Systems - Part 1 of 2
+      url: https://learn.microsoft.com/en-us/training/paths/gh-developing-agentic-systems-1
+      description: Microsoft Learn path covering SDLC integration, agent architecture, tools, permissions and MCP.
+    - title: Developing in Agentic AI Systems - Part 2 of 2
+      url: https://learn.microsoft.com/en-us/training/paths/github-agentic-systems-part-two/github-agentic-systems-part-two
+      description: Microsoft Learn path covering multi-agent orchestration, memory, evaluation and governance.
+    - title: Foundations of Agentic AI in GitHub
+      url: https://learn.microsoft.com/en-us/training/modules/foundations-agentic-ai/
+      description: Microsoft Learn module introducing the agent lifecycle, traceability and the contributor model.
+    - title: Building Custom Agents
+      url: https://awesome-copilot.github.com/learning-hub/building-custom-agents/
+      description: Awesome Copilot guide to personas, agent profiles, design patterns and tool integrations.
+    - title: Agents and Subagents
+      url: https://awesome-copilot.github.com/learning-hub/agents-and-subagents/
+      description: Awesome Copilot guide to focused delegation, isolated context and coordination patterns.
+    - title: Copilot Cloud Agent Workshop
+      url: https://awesome-copilot.github.com/learning-hub/copilot-workshops/cloud/
+      description: Hands-on exercises covering instructions, issue delegation, custom agents, monitoring and iteration.
